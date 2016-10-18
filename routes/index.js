@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 
 
+var userPlan = require('./userPlan.js');
+
+
 /* GET HOME PAGE. */
 
 router.get('/', function(req, res, next) {
@@ -10,6 +13,9 @@ router.get('/', function(req, res, next) {
         );
     });
 });
+
+// Routes for UserPlan 
+router.get("/api/v1/userPlans", userPlan.getUserPlan);
 
 
 module.exports = router;
