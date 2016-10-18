@@ -1,5 +1,14 @@
 var express = require('express');
 var router = express.Router();
+var multer = require('multer');
+
+var upload = multer({
+  dest: './uploads',
+ /* limits: {
+         fileSize: 5 * 1000000
+    }
+    */
+});
 
 
 var userPlan = require('./userPlan.js');
