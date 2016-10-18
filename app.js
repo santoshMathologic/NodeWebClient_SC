@@ -3,13 +3,12 @@ var logger          = require('morgan');
 var cookieParser    = require('cookie-parser');
 var bodyParser      = require('body-parser');
 var path            = require('path');
-var cons = require('consolidate');
-var favicon = require('serve-favicon');
-var routes = require('./routes/index');
+var cons            = require('consolidate');
+var favicon         = require('serve-favicon');
+var routes          = require('./routes/index');
+
+
 var app = express();
-
-
-
 app.engine('html', cons.swig);
 
 // set .html as the default extension
