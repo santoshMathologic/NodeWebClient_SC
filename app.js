@@ -14,6 +14,8 @@ app.engine('html', cons.swig);
 // set .html as the default extension
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
+//app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
+app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
