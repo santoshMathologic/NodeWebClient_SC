@@ -11,8 +11,8 @@ var sizeCal = require('../Utils/convertFileSystem.js');
 var isDebug = false;
 var DEBUG = function (val) {
     if (isDebug) {
-        console.log("NodeRestApi : LOG : ");
-        console.log(val);
+        console.log("NodeRestApi : LOG : "+val);
+        
     }
 };
 var ERROR = function (val) {
@@ -40,7 +40,8 @@ var UploadObject = {
         }
 
         try {
-            DEBUG(response);
+            isDebug = true;
+            DEBUG("In Debug Mode");
         } catch (exception) {
             console.log("Exception :" + exception);
         }
