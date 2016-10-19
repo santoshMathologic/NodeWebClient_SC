@@ -6,24 +6,11 @@ var multer = require('multer')
 var Promise = require("bluebird");
 var upload = multer({ dest: 'uploads/' })
 var sizeCal = require('../Utils/convertFileSystem.js');
+var custException = require('../library/exception.js');
+var uploadModel = require("../models/upload.js");
 
 
-var isDebug = false;
-var DEBUG = function (val) {
-    if (isDebug) {
-        console.log("NodeRestApi : LOG : "+val);
-        
-    }
-};
-var ERROR = function (val) {
-    console.log("NodeRestApi : ERROR : ");
-    console.log(val);
-};
 
-var LOG = function (val) {
-    console.log("NodeRestApi : LOG : ");
-    console.log(val);
-};
 
 var UploadObject = {
 
@@ -31,8 +18,8 @@ var UploadObject = {
         var path = req.file.path;
         var name = req.file.filename;
         var originalFileName = req.file.originalname;
-        var sizeOfFile = req.file.size;
-        var ExactSize = sizeCal.convertBytesToKb(sizeOfFile, true);
+         
+        var ExactSize = sizeCal.convertBytesToKb(req.file.size, true);
         var dirName = 'uploadCSV';
 
         if (!fs.existsSync(dirName)) {
@@ -41,7 +28,70 @@ var UploadObject = {
 
         try {
             isDebug = true;
-            DEBUG("In Debug Mode");
+            custException.DEBUG("In Debug Mode");
+            fs.readFile(path, 'utf8', function (error, data) {
+                if (error) {
+                    throw new Error("Error Reading in File : " + error)
+                } else {
+                    buffer = new Buffer(data);
+                    console.log(data);
+                     var uploadObject = new uploadModel({
+                    data: buffer,
+                    //dataType: dataType,
+                    //fileType: fileType,
+                    originalFileName: originalFileName,
+                    uploadedBy: "santosh",
+                    isProcessed: false,
+                    status: description,
+                    description: description,
+
+                })
+
+                //  uploadPro = new UploadStuff(data,dataType);
+
+                uploadModel.create(uploadObject, function (err) {
+                    if (err) return err;
+                    res.status(201);
+                    return res.json({
+                        "status": 200,
+                        "success": true,
+                        "message": "Upload saved Successfully",
+                    });
+                });
+
+
+
+                    fs.open(path, 'w', function (err, fd) {
+                        if (err) {
+                            throw 'error opening file: ' + err;
+                        }
+
+                        fs.write(fd, buffer, 0, buffer.length, null, function (err) {
+                            if (err) throw "error in writing file: " + err;
+                            else {
+
+                                fs.unlink("./uploads/" + name, function (err) {
+                                    if (err) throw new Error("Unable to Removed File : " + err)
+                                    else {
+                                        console.log("Junk file deleted SuccessFully " + "./uploads/" + name);
+
+
+                                    }
+                                });
+
+                            }
+
+                        });
+                    });
+
+
+
+
+
+
+                }
+
+            })
         } catch (exception) {
             console.log("Exception :" + exception);
         }
