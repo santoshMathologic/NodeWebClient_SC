@@ -18,8 +18,7 @@ var UploadObject = {
         var path = req.file.path;
         var name = req.file.filename;
         var originalFileName = req.file.originalname;
-         
-        var ExactSize = sizeCal.convertBytesToKb(req.file.size, true);
+        var fileSize = sizeCal.convertBytesToKb(req.file.size, true);
         var dirName = 'uploadCSV';
 
         if (!fs.existsSync(dirName)) {
@@ -42,8 +41,8 @@ var UploadObject = {
                     originalFileName: originalFileName,
                     uploadedBy: "santosh",
                     isProcessed: false,
-                    status: description,
-                    description: description,
+                    status: "Files Uploaded Successfully",
+                    description: "Files Uploaded Successfully"
 
                 })
 
