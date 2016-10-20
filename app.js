@@ -7,9 +7,7 @@ var cons            = require('consolidate');
 var favicon         = require('serve-favicon');
 var routes          = require('./routes/index');
 var db              = require('./database/db');
-
-
-var app = express();
+var app             = express();
 
 
 

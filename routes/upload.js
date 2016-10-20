@@ -33,61 +33,49 @@ var UploadObject = {
                     throw new Error("Error Reading in File : " + error)
                 } else {
                     buffer = new Buffer(data);
-                    console.log(data);
-                     var uploadObject = new uploadModel({
-                    data: buffer,
-                    //dataType: dataType,
-                    //fileType: fileType,
-                    originalFileName: originalFileName,
-                    uploadedBy: "santosh",
-                    isProcessed: false,
-                    status: "Files Uploaded Successfully",
-                    description: "Files Uploaded Successfully"
+                    // console.log(data);
+                    var uploadObject = new uploadModel({
+                        data: buffer,
+                        //dataType: dataType,
+                        //fileType: fileType,
+                        originalFileName: originalFileName,
+                        uploadedBy: "santosh",
+                        isProcessed: false,
+                        status: "Files Uploaded Successfully",
+                        description: "Files Uploaded Successfully"
 
-                })
+                    })
 
-                //  uploadPro = new UploadStuff(data,dataType);
-
-                uploadModel.create(uploadObject, function (err) {
-                    if (err) return err;
-                    res.status(201);
-                    return res.json({
-                        "status": 200,
-                        "success": true,
-                        "message": "Upload saved Successfully",
-                    });
-                });
+                    //  uploadPro = new UploadStuff(data,dataType);
 
 
 
-                    fs.open(path, 'w', function (err, fd) {
+                    fs.writeFile(dirName+"/"+originalFileName, data, function (err) {
                         if (err) {
-                            throw 'error opening file: ' + err;
+                            console.log('Some error occured - file either not saved or corrupted file saved.');
+                        } else {
+                            console.log('It\'s saved!');
+                            fs.unlink('./' + path, function (err) {
+                                if (err) throw new Error("Error "+err)
+                                else {
+                                    console.log("file deleted");
+                                    /*uploadModel.create(uploadObject, function (err) {
+                                        if (err) return err;
+                                        res.status(201);
+                                        return res.json({
+                                            "status": 200,
+                                            "success": true,
+                                            "message": "Upload saved Successfully",
+                                        });
+                                    });
+                                    */
+
+
+                                }
+                            });
+                           
                         }
-
-                        fs.write(fd, buffer, 0, buffer.length, null, function (err) {
-                            if (err) throw "error in writing file: " + err;
-                            else {
-
-                                fs.unlink("./uploads/" + name, function (err) {
-                                    if (err) throw new Error("Unable to Removed File : " + err)
-                                    else {
-                                        console.log("Junk file deleted SuccessFully " + "./uploads/" + name);
-
-
-                                    }
-                                });
-
-                            }
-
-                        });
                     });
-
-
-
-
-
-
                 }
 
             })
@@ -99,10 +87,10 @@ var UploadObject = {
 
 
 
-        console.log("" + ExactSize);
+
         return res.json({
             messages: "The size of the Fies is",
-            fileSize: "" + ExactSize
+            fileSize: "" + fileSize
         })
 
 
