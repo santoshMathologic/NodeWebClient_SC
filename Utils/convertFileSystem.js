@@ -14,10 +14,19 @@ var convertBytesToKb = function (bytes, si) {
     return bytes.toFixed(1) + ' ' + units[u];
 
 }
-
-var SizeCalulate = {
-    convertBytesToKb: convertBytesToKb
-
+var getFileType  = function(originalFileName){
+  
+   if(originalFileName != undefined ||  originalFileName != null || originalFileName!="")
+        return originalFileName.split('.').pop();
+        else
+    return false
 }
 
-module.exports = SizeCalulate;
+var customConverter = {
+    convertBytesToKb: convertBytesToKb,
+    getFileType :getFileType
+}
+
+
+
+module.exports = customConverter;

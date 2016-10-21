@@ -29,7 +29,7 @@ router.get("/api/v1/userPlans", userPlan.getUserPlan);
 
 
 // Routes for upload
-router.post("/api/v1/upload/NewUpload",upload.single('Uploadfile'),userUpload.NewUpload);
+router.post("/api/v1/upload/NewUpload",upload.single('Uploadfile'),userUpload.createNewUpload);
 
 
 module.exports = router;

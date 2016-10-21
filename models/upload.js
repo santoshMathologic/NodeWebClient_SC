@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var uploadSchema = new mongoose.Schema({
     data: { type: String, default: null },
     dataType: String,
+    fileSize: String,
     fileType: String,
     originalFileName: String,
     uploadedBy: String,
