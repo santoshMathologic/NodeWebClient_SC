@@ -11,23 +11,12 @@ var app             = express();
 
 
 
-/**
- * 
- *  Set the HTML VIEWS     
- */
-
-/*  app.engine('html', cons.swig);
-    app.set('view engine', 'html');
-    app.set('views', __dirname + '/views');
-    app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
-*/
-
 
 
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
-app.use(express.static(path.join(__dirname + '/public')));
+app.use(express.static(path.join(__dirname + 'public')));
 
 
 app.use(favicon(__dirname + '/public/images/favicon.ico'));

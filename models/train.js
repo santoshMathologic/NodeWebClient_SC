@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 var trainSchema = new mongoose.Schema({
-    name: { type: String, default: "",index: true},
+    trainName: { type: String, default: "",index: true},
+    trainNo: Number,
     runningDays: [{type:Number}],
-    train_no: Number,
     fromStation : String,
     toStation: String,
     trainType: String,

@@ -14,7 +14,6 @@ var trains = {
 
 
             for (var count = 0; count < cursor.length; count++) {
-                //console.log(cursor[count].data);
                 parseTrainTimeTable(cursor[count].data);
 
             }
@@ -44,7 +43,7 @@ function parseTrainTimeTable(data) {
     var toStation;
     var trainType;
     var runningDaysArray = [];
-    
+
 
     data += '\n';
     var re = /\r\n|\n\r|\n|\r/g;
@@ -66,13 +65,21 @@ function parseTrainTimeTable(data) {
                 }
             }
 
-            pushDataToArray(trainNo, trainName, fromStation, toStation, runningDaysArray, trainType);
-            createTrainList(trainListArrray).then(function(res){
-                console.log(""+res);
-            })
+         //   pushDataToArray(trainNo, trainName, fromStation, toStation, runningDaysArray, trainType);
+         console.log(""+trainNo);
+         console.log(""+trainName);
+         console.log(""+fromStation);
+         console.log(""+toStation);
+         console.log(""+runningDays);
+         console.log(""+trainType);
+
+
 
         }
     }
+    createTrainList(trainListArrray).then(function (response) {
+        console.log("Response" + response);
+    })
 }
 
 function pushDataToArray(trainNo, trainName, fromStation, toStation, runningDays, trainType) {
@@ -86,15 +93,15 @@ function pushDataToArray(trainNo, trainName, fromStation, toStation, runningDays
     })
 }
 
-  function createTrainList(data) {
-        var deferred = Q.defer();
-        trainModel.insertMany(data, function(err, post) {
-            if (err) return err;
-            console.log("post");
-            deferred.resolve(post);
+function createTrainList(data) {
+    var deferred = Q.defer();
+    trainModel.insertMany(data, function (err, post) {
+        if (err) return err;
+        console.log("post");
+        deferred.resolve(post);
 
-        });
-        return deferred.promise;
-    }
+    });
+    return deferred.promise;
+}
 
 module.exports = trains 
