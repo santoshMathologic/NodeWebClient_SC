@@ -7,20 +7,59 @@ var trainListArrray = [];
 
 
 var trains = {
-    processUpload: function (req, res) {
+    processUpload: function (req, res, next) {
 
+        if (req.query.userChoice != null || req.query.userChoice != "") {
+            var userChoice = req.query.userChoice;
+            switch (userChoice) {
+                case "combine_train_details.csv":
+                case "COMBINE_TRAIN_DETAILS.csv":
+                    uploadModel.find({ 'originalFileName': userChoice }, function (err, cursor) {
+                        for (var count = 0; count < cursor.length; count++) {
+                            parseTrainTimeTable(cursor[count].data);
 
-        uploadModel.find({ 'originalFileName': "combine_train_details.csv" }, function (err, cursor) {
+                        }
+                    });
 
+                    break;
 
-            for (var count = 0; count < cursor.length; count++) {
-                parseTrainTimeTable(cursor[count].data);
+                case "combine_train_details - extraSmall.csv":
+                case "COMBINE_TRAIN_DETAILS - EXTRASMALL.csv":
+                    uploadModel.find({ 'originalFileName': userChoice }, function (err, cursor) {
+                        for (var count = 0; count < cursor.length; count++) {
+                            parseTrainTimeTable(cursor[count].data);
+
+                        }
+                    });
+                    break;
+
+                case "combine_train_stations - extraSmall.csv":
+                case 'COMBINE_TRAIN_STATIONS - extraSmall.csv':
+                    uploadModel.find({ 'originalFileName': userChoice }, function (err, cursor) {
+                        for (var count = 0; count < cursor.length; count++) {
+                            parseTrainStation(cursor[count].data);
+
+                        }
+                    });
+
+                    break;
+
+                case "combine_train_stations.csv":
+                case "COMBINE_TRAIN_STATIONS.csv":
+
+                    uploadModel.find({ 'originalFileName': userChoice }, function (err, cursor) {
+                        for (var count = 0; count < cursor.length; count++) {
+                            parseTrainStation(cursor[count].data);
+
+                        }
+                    });
+
+                    break;
 
             }
-        });
 
 
-
+        }
         res.status(201);
         return res.json({
             "status": 200,
@@ -37,18 +76,20 @@ var trains = {
 
 function parseTrainTimeTable(data) {
     var deferred = Q.defer();
-    var trainNo;
-    var trainName;
-    var fromStation;
-    var toStation;
-    var trainType;
-    var runningDaysArray = [];
+
 
 
     data += '\n';
     var re = /\r\n|\n\r|\n|\r/g;
     var rows = data.replace(re, "\n").split("\n");
     for (var i = 1; i < rows.length; i++) {
+
+        var trainNo;
+        var trainName;
+        var fromStation;
+        var toStation;
+        var trainType;
+        var runningDaysArray = [];
         var rowdata = rows[i].split(",");
         if (rowdata[0] != "") {
 
@@ -65,13 +106,8 @@ function parseTrainTimeTable(data) {
                 }
             }
 
-         //   pushDataToArray(trainNo, trainName, fromStation, toStation, runningDaysArray, trainType);
-         console.log(""+trainNo);
-         console.log(""+trainName);
-         console.log(""+fromStation);
-         console.log(""+toStation);
-         console.log(""+runningDays);
-         console.log(""+trainType);
+            pushDataToArray(trainNo, trainName, fromStation, toStation, runningDaysArray, trainType);
+            //console.log(" " + trainNo + " " + trainName + " " + fromStation + " " + toStation + " " + runningDaysArray + " " + trainType);
 
 
 
@@ -82,6 +118,13 @@ function parseTrainTimeTable(data) {
     })
 }
 
+function parseTrainStation(data) {
+
+    console.log("" + data);
+
+
+
+}
 function pushDataToArray(trainNo, trainName, fromStation, toStation, runningDays, trainType) {
     trainListArrray.push({
         trainNo: trainNo,
