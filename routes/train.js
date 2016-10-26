@@ -16,7 +16,18 @@ var trains = {
                 case "COMBINE_TRAIN_DETAILS.csv":
                     uploadModel.find({ 'originalFileName': userChoice }, function (err, cursor) {
                         for (var count = 0; count < cursor.length; count++) {
-                            parseTrainTimeTable(cursor[count].data);
+                            parseTrainTimeTable(cursor[count].data).then(function (res) {
+
+
+
+                            });
+                            res.status(201);
+                            return res.json({
+                                "status": 200,
+                                "success": true,
+                                "message": "train processing completed successfully",
+                            });
+
 
                         }
                     });
@@ -60,12 +71,6 @@ var trains = {
 
 
         }
-        res.status(201);
-        return res.json({
-            "status": 200,
-            "success": true,
-            "message": "train processing completed successfully",
-        });
 
 
     }
@@ -76,9 +81,6 @@ var trains = {
 
 function parseTrainTimeTable(data) {
     var deferred = Q.defer();
-
-
-
     data += '\n';
     var re = /\r\n|\n\r|\n|\r/g;
     var rows = data.replace(re, "\n").split("\n");
@@ -115,12 +117,15 @@ function parseTrainTimeTable(data) {
     }
     createTrainList(trainListArrray).then(function (response) {
         console.log("Response" + response);
+        deferred.resolve(response);
     })
+    return deferred.promise;
 }
 
 function parseTrainStation(data) {
 
     console.log("" + data);
+
 
 
 
